@@ -16,26 +16,14 @@ class WeaviaClient:
         self._import_data()
     
     def _import_data(self) -> None:
-        resp = requests.get(BOOKS_URL)
-        data = json.loads(resp.text)
+        data = json.loads(requests.get(BOOKS_URL).text)
 
         self.client.batch.configure(batch_size=100)
         with self.client.batch as batch:
-            for i, d in enumerate(data["books"]):
-                print(f"importing question: {i+1}")
-                properties = {
-                    "isbn": d["isbn"],
-                    "title": d["title"],
-                    "subtitle": d["subtitle"],
-                    "author": d["author"],
-                    "published": d["published"],
-                    "publisher": d["publisher"],
-                    "pages": d["pages"],
-                    "description": d["description"],
-                    "website": d["website"]
-                }
+            for i, book in enumerate(data["books"]):
+                print(f"importing book: {i+1}")
                 batch.add_data_object(
-                    data_object=properties,
+                    data_object=book,
                     class_name="Book"
                 )
     
