@@ -1,8 +1,12 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 from ..services.question import get_answer_to
 
 router = APIRouter()
 
-@router.get('/question')
-async def ask_question_route(question):
-    return get_answer_to(question)
+class Question(BaseModel):
+    q: str
+
+@router.post('/question')
+async def ask_question_route(question: Question):
+    return get_answer_to(question.q)
