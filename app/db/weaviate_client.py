@@ -27,7 +27,7 @@ class WeaviaClient:
                     class_name="Book"
                 )
     
-    def query(self, concepts) -> dict:
+    def ask_question(self, concepts) -> dict:
         response = (
             self.client.query
             .get("Book", ["title", "author", "description"])

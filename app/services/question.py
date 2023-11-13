@@ -5,5 +5,5 @@ from ..utils.config import config
 def get_answer_to(question) -> dict:
     client = WeaviaClient()
 
-    answer = client.query([question])
+    answer = client.ask_question([question])
     return {"question": question, "data": answer}
