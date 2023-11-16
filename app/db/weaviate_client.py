@@ -9,7 +9,7 @@ class WeaviaClient:
     def __init__(self, client: weaviate.Client ,recreate: bool = False):
         self._client = client
         
-        if recreate:
+        if recreate or self.__is_db_empty():
             self._setup() 
         
     def ask_question(self, concepts) -> dict:
@@ -53,3 +53,7 @@ class WeaviaClient:
                     data_object=book,
                     class_name="Book"
                 )
+
+    def __is_db_empty(self):
+        schema = self._client.schema.get("Book")
+        return not self._client.schema.contains(schema)
